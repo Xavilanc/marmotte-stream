@@ -6,15 +6,9 @@ import { AppComponent } from './app.component';
 import { AddAudioTrackFormComponent } from './add-audio-track-form/add-audio-track-form.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AddAudioTrackFormComponent
-  ],
-  imports: [
-    BrowserModule,
-    ReactiveFormsModule
-  ],
+  declarations: [AppComponent, AddAudioTrackFormComponent],
+  imports: [BrowserModule, ReactiveFormsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

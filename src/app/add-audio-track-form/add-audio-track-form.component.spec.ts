@@ -8,9 +8,8 @@ describe('AddAudioTrackFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddAudioTrackFormComponent ]
-    })
-    .compileComponents();
+      declarations: [AddAudioTrackFormComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AddAudioTrackFormComponent);
     component = fixture.componentInstance;
