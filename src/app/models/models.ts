@@ -3,3 +3,5 @@ export interface AudioTrack {
   genre: string;
   path: string;
 }
+
+export type InputType = string;

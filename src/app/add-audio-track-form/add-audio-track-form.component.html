@@ -1,1 +1,32 @@
-<p>add-audio-track-form works!</p>
+
+<form (ngSubmit)="myForm.valid && onSubmit()" [formGroup]="addAudioTrackForm" #myForm="ngForm">
+    <fieldset>
+        <label for="title">Titre</label>
+        <input type="text" id="title" name="title" placeholder="Titre" formControlName="title" required>
+        <ul *ngIf="addAudioTrackForm.controls['title'].errors && addAudioTrackForm.controls['title'].touched">
+            <li *ngIf="addAudioTrackForm.controls['title'].errors['required']" role="alert" aria-live="assertive">Un titre est requis</li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <label for="genre">Genre</label>
+        <input type="text" id="genre" name="genre" placeholder="Genre" formControlName="genre" required>
+        <ul *ngIf="addAudioTrackForm.controls['genre'].errors && addAudioTrackForm.controls['genre'].touched">
+            <li *ngIf="addAudioTrackForm.controls['genre'].errors['required']" role="alert" aria-live="assertive">Un genre musical est requis</li>
+        </ul>
+    </fieldset>
+    <fieldset>
+        <label for="path">URL ou fichier</label>
+        <input type="text" placeholder="URL ou fichier" formControlName="path">
+        <select (change)="updateInputType()">
+            <option value="text">Ajouter un morceau à partir d'une URL</option>
+            <option value="file">Ajouter un morceau à partir d'un fichier</option>
+        </select>
+        <input *ngIf="inputType === 'text'" type="text" formControlName="path" required>
+        <input type="file" formControlName="path"  (change)="showPreview($event)" required>
+        <ul *ngIf="addAudioTrackForm.controls['path'].errors && addAudioTrackForm.controls['path'].touched">
+            <li *ngIf="addAudioTrackForm.controls['path'].errors['required']" role="alert" aria-live="assertive">Un genre musical est requis</li>
+        </ul>
+    </fieldset>
+    <button type="submit">Sauvegarder</button>
+</form>
+<img [src]="this.audioTrackPath" alt="titre" />
