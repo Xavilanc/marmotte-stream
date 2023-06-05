@@ -1,4 +1,8 @@
-
+<p>Veuillez choisir le mode d'ajout de votre piste musicale</p>
+<select [(ngModel)]="selectedOption">
+    <option value="text">Entrer une URL</option>
+    <option value="file">Charger un fichier</option>
+</select>
 <form (ngSubmit)="myForm.valid && onSubmit()" [formGroup]="addAudioTrackForm" #myForm="ngForm">
     <fieldset>
         <label for="title">Titre</label>
@@ -16,17 +20,12 @@
     </fieldset>
     <fieldset>
         <label for="path">URL ou fichier</label>
-        <input type="text" placeholder="URL ou fichier" formControlName="path">
-        <select (change)="updateInputType()">
-            <option value="text">Ajouter un morceau à partir d'une URL</option>
-            <option value="file">Ajouter un morceau à partir d'un fichier</option>
-        </select>
-        <input *ngIf="inputType === 'text'" type="text" formControlName="path" required>
-        <input type="file" formControlName="path"  (change)="showPreview($event)" required>
+        <input *ngIf="selectedOption === 'text'" type="text" formControlName="path" required>
+        <input *ngIf="selectedOption === 'file'" type="file" formControlName="path"  (change)="showPreview($event)" required>
         <ul *ngIf="addAudioTrackForm.controls['path'].errors && addAudioTrackForm.controls['path'].touched">
             <li *ngIf="addAudioTrackForm.controls['path'].errors['required']" role="alert" aria-live="assertive">Un genre musical est requis</li>
         </ul>
     </fieldset>
     <button type="submit">Sauvegarder</button>
+    <button type="reset">Recommencer</button>
 </form>
-<img [src]="this.audioTrackPath" alt="titre" />

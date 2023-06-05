@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AudioTrack, InputType } from '../models/models';
+import { AudioTrack } from '../models/models';
 
 @Component({
   selector: 'app-add-audio-track-form',
@@ -9,13 +9,11 @@ import { AudioTrack, InputType } from '../models/models';
 })
 export class AddAudioTrackFormComponent {
 
-  inputType: InputType = 'text';
-
-  selectedOption: InputType = '';
+  selectedOption: string = 'text';
 
   audioTrackPath: string = '';
 
-  selectedFile!: File;
+  private selectedFile!: File;
 
   addAudioTrackForm: FormGroup;
 
@@ -23,12 +21,8 @@ export class AddAudioTrackFormComponent {
     this.addAudioTrackForm = this.formBuilder.group<AudioTrack>({
       title: '',
       genre: '',
-      path: ''
+      path: '',
     });
-  }
-
-  updateInputType(): void {
-    this.inputType = this.selectedOption;
   }
 
   showPreview(event: Event) {
