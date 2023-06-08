@@ -1,1 +1,3 @@
-<p>audio-track-form-field works!</p>
+<label [for]="formFieldConfig.inputName">{{formFieldConfig.label}}</label>
+<input [type]="formFieldConfig.inputType" [id]="formFieldConfig.inputName" [name]="formFieldConfig.inputName" [placeholder]="formFieldConfig.inputPlaceholder" [formControlName]="formFieldConfig.formControlName" required>
+

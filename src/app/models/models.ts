@@ -3,3 +3,11 @@ export interface AudioTrack {
   genre: string;
   path: string;
 }
+
+export interface FormFieldConfig {
+  label: string;
+  inputType: string;
+  inputName: string;
+  inputPlaceholder: string;
+  formControlName: string;
+}

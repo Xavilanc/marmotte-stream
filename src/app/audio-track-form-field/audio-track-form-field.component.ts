@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FormFieldConfig } from '../models/models';
 
 @Component({
   selector: 'app-audio-track-form-field',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./audio-track-form-field.component.css']
 })
 export class AudioTrackFormFieldComponent {
+  @Input() formFieldConfig: FormFieldConfig = {
+    label: '',
+    inputType: '',
+    inputName: '',
+    inputPlaceholder: '',
+    formControlName: ''
+  };
 
 }
