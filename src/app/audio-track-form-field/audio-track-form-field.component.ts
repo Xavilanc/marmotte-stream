@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormFieldConfig } from '../models/models';
 
 @Component({
@@ -15,4 +15,10 @@ export class AudioTrackFormFieldComponent {
     formControlName: ''
   };
 
+  @Output() valueChanged: EventEmitter<string> = new EventEmitter<string>();
+
+  onInputChange(event: Event) {
+    const { value } = event.target as HTMLInputElement;
+    this.valueChanged.emit(value);
+  }
 }
