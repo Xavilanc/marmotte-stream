@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AudioTrack, FormFieldConfig } from '../models/models';
+import { FormFieldConfig, Playlist } from '../shared/models/models';
 import { AUDIO_TRACK_FORM_CONFIG } from '../form.config';
+import { PlaylistService } from '../shared/services/playlist.service';
 
 @Component({
   selector: 'app-add-audio-track-form',
@@ -9,8 +10,6 @@ import { AUDIO_TRACK_FORM_CONFIG } from '../form.config';
   styleUrls: ['./add-audio-track-form.component.css'],
 })
 export class AddAudioTrackFormComponent {
-  newAudioTrack?: AudioTrack;
-
   selectedOption: string = 'text';
 
   audioTrack = new FormControl('');
@@ -18,6 +17,10 @@ export class AddAudioTrackFormComponent {
   audioTrackFileUrl: string = '';
 
   formFieldConfig: FormFieldConfig[] = AUDIO_TRACK_FORM_CONFIG;
+
+  playlist: Playlist = [];
+
+  constructor(private playlistService: PlaylistService) {}
 
   // Getter for the input type
   getType() {
@@ -42,10 +45,10 @@ export class AddAudioTrackFormComponent {
     }
   }
 
-  onSubmit(event: Event): string {
+  onSubmit(event: Event): void {
     console.log('Audio Track Form submitted');
     console.log(this.getAudioTrack());
-    return this.getAudioTrack();
+    this.playlistService.addAudioTrack(this.getAudioTrack());
   }
 
   // Change input type
