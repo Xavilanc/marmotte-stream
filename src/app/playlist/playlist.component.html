@@ -1,3 +1,6 @@
-<ul *ngFor="let audioTrack of playlist">
-    <li>{{audioTrack}}</li>
+<ul *ngFor="let audioTrack of playlist; let i = index">
+    <li>{{audioTrack}}
+        <span>{{audioTrack}}</span>
+        <button (click)="deleteAudioTrack(i)">Supprimer</button>
+    </li>
 </ul>

@@ -8,22 +8,19 @@ import { PlaylistService } from '../shared/services/playlist.service';
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.css'],
 })
-export class PlaylistComponent implements OnInit, OnDestroy {
+export class PlaylistComponent implements OnInit {
   playlist: Playlist = [];
 
-  subcription: Subscription;
+  constructor(private playlistService: PlaylistService) {}
 
-  constructor(private playlistService: PlaylistService) {
-    this.subcription = this.playlistService
+  ngOnInit(): void {
+    this.playlistService
       .getPlaylist$()
       .subscribe((value) => (this.playlist = value));
   }
 
-  ngOnInit(): void {
-    this.playlist = this.playlistService.getPlaylist();
-  }
-
-  ngOnDestroy(): void {
-    this.subcription.unsubscribe();
+  deleteAudioTrack(index: number): void {
+    this.playlistService.deleteAudioTrack(index);
+    this.playlistService.getPlaylist$();
   }
 }

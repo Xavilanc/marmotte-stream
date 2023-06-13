@@ -1,25 +1,25 @@
+/* eslint-disable no-restricted-syntax */
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Playlist } from '../models/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlaylistService {
-  private playlist: Playlist = [];
+  private playlist$ = new BehaviorSubject<Playlist>([]);
 
-  private playlist$ = new Subject<Playlist>();
-
-  getPlaylist(): Playlist {
-    return this.playlist;
+  addAudioTrack(audioTrack: string): void {
+    this.playlist$.next([...this.playlist$.value, audioTrack]);
   }
 
-  addAudioTrack(audioTrack: string) {
-    this.playlist.push(audioTrack);
-    this.playlist$.next(this.playlist);
+  deleteAudioTrack(index: number): void {
+    this.playlist$.next(
+      this.playlist$.value.filter((_value, i) => i !== index)
+    );
   }
 
-  getPlaylist$(): Subject<Playlist> {
-    return this.playlist$;
+  getPlaylist$(): Observable<Playlist> {
+    return this.playlist$.asObservable();
   }
 }
