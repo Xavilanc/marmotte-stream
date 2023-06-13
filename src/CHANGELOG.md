@@ -8,6 +8,10 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ## Feature
 
+### 13/06/2023
+
+- [MS-FORM3] Refactorisation du code du formulaire
+
 ### 05/06/2023
 
 - [MS-FORM2] Ajout de la fonctionnalité permettant de choisir le type d'input

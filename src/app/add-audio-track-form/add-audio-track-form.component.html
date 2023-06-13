@@ -1,31 +1,13 @@
 <p>Veuillez choisir le mode d'ajout de votre piste musicale</p>
-<select [(ngModel)]="selectedOption">
-    <option value="text">Entrer une URL</option>
-    <option value="file">Charger un fichier</option>
+<select [(ngModel)]="selectedOption" (change)="onSelectChange($event)">
+  <option value="text">Entrer une URL</option>
+  <option value="file">Charger un fichier</option>
 </select>
-<form (ngSubmit)="myForm.valid && onSubmit()" [formGroup]="addAudioTrackForm" #myForm="ngForm">
-    <fieldset>
-        <label for="title">Titre</label>
-        <input type="text" id="title" name="title" placeholder="Titre" formControlName="title" required>
-        <ul *ngIf="addAudioTrackForm.controls['title'].errors && addAudioTrackForm.controls['title'].touched">
-            <li *ngIf="addAudioTrackForm.controls['title'].errors['required']" role="alert" aria-live="assertive">Un titre est requis</li>
-        </ul>
-    </fieldset>
-    <fieldset>
-        <label for="genre">Genre</label>
-        <input type="text" id="genre" name="genre" placeholder="Genre" formControlName="genre" required>
-        <ul *ngIf="addAudioTrackForm.controls['genre'].errors && addAudioTrackForm.controls['genre'].touched">
-            <li *ngIf="addAudioTrackForm.controls['genre'].errors['required']" role="alert" aria-live="assertive">Un genre musical est requis</li>
-        </ul>
-    </fieldset>
-    <fieldset>
-        <label for="path">URL ou fichier</label>
-        <input *ngIf="selectedOption === 'text'" type="text" formControlName="path" required>
-        <input *ngIf="selectedOption === 'file'" type="file" formControlName="path"  (change)="showPreview($event)" required>
-        <ul *ngIf="addAudioTrackForm.controls['path'].errors && addAudioTrackForm.controls['path'].touched">
-            <li *ngIf="addAudioTrackForm.controls['path'].errors['required']" role="alert" aria-live="assertive">Un genre musical est requis</li>
-        </ul>
-    </fieldset>
-    <button type="submit">Sauvegarder</button>
-    <button type="reset">Recommencer</button>
+<form
+  (ngSubmit)="myForm.valid && onSubmit($event)"
+  #myForm="ngForm">
+  <input [type]="getType()" name="url" [formControl]="audioTrack" id="url" (change)="onFileInputChange($event)"/>
+
+  <button type="submit">Sauvegarder</button>
+  <button type="reset">Recommencer</button>
 </form>

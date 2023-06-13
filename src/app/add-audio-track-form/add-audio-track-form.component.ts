@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { AudioTrack } from '../models/models';
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { AudioTrack, FormFieldConfig } from '../models/models';
+import { AUDIO_TRACK_FORM_CONFIG } from '../form.config';
 
 @Component({
   selector: 'app-add-audio-track-form',
@@ -8,35 +9,60 @@ import { AudioTrack } from '../models/models';
   styleUrls: ['./add-audio-track-form.component.css'],
 })
 export class AddAudioTrackFormComponent {
+  newAudioTrack?: AudioTrack;
 
   selectedOption: string = 'text';
 
-  audioTrackPath: string = '';
+  audioTrack = new FormControl('');
 
-  private selectedFile!: File;
+  audioTrackFileUrl: string = '';
 
-  addAudioTrackForm: FormGroup;
+  formFieldConfig: FormFieldConfig[] = AUDIO_TRACK_FORM_CONFIG;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.addAudioTrackForm = this.formBuilder.group<AudioTrack>({
-      title: '',
-      genre: '',
-      path: '',
-    });
+  // Getter for the input type
+  getType() {
+    return this.formFieldConfig[0].inputType;
   }
 
-  showPreview(event: Event) {
-    const target = event.target as HTMLInputElement;
-    if (target) {
-      const file = target.files![0];
+  // Get audio track URL
+  getAudioTrack(): string {
+    if (this.formFieldConfig[0].inputType === 'file') {
+      return this.audioTrackFileUrl;
+    }
+    return this.audioTrack.value!;
+  }
 
-      this.selectedFile = file;
-      this.audioTrackPath = URL.createObjectURL(file);
+  // Create an URL from the selected file
+  onFileInputChange(event: Event): string {
+    if (this.formFieldConfig[0].inputType === 'file') {
+      const fileInput = event.target as HTMLInputElement;
+      const file = fileInput.files![0];
+      const blobUrl = URL.createObjectURL(file);
+      this.audioTrackFileUrl = blobUrl.replace(/^blob:/, '');
+      return this.audioTrackFileUrl;
+    }
+    return '';
+  }
+
+  onSubmit(event: Event): string {
+    console.log('Audio Track Form submitted');
+    console.log(this.getAudioTrack());
+    return this.getAudioTrack();
+  }
+
+  // Change input type
+  onSelectChange(event: Event) {
+    this.selectedOption = (event.target as HTMLSelectElement).value;
+    if (this.selectedOption === 'file') {
+      this.updateFormFieldType('file', 'Choisir un fichier');
+    } else {
+      this.updateFormFieldType('text', 'Entrez une URL');
     }
   }
 
-  onSubmit(): void {
-    console.log('Audio Track Form submitted');
-    console.log(this.addAudioTrackForm.value);
+  // Update input type and placeholder
+  updateFormFieldType(inputType: string, inputPlaceholder: string) {
+    this.formFieldConfig[0].inputType = inputType;
+    this.formFieldConfig[0].inputPlaceholder = inputPlaceholder;
   }
 }
