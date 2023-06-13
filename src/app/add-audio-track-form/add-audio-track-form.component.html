@@ -4,17 +4,10 @@
   <option value="file">Charger un fichier</option>
 </select>
 <form
-  (ngSubmit)="myForm.valid && onSubmit()"
-  [formGroup]="addAudioTrackForm"
-  #myForm="ngForm"
->
-  <ng-container *ngFor="let formField of formFieldConfig">
-    <app-audio-track-form-field
-      [formFieldConfig]="formField"
-      (valueChanged)="onFieldValueChanged($event, formField.formControlName)"
-    >
-    </app-audio-track-form-field>
-  </ng-container>
+  (ngSubmit)="myForm.valid && onSubmit($event)"
+  #myForm="ngForm">
+  <input [type]="getType()" name="url" [formControl]="audioTrack" id="url" (change)="onFileInputChange($event)"/>
+
   <button type="submit">Sauvegarder</button>
   <button type="reset">Recommencer</button>
 </form>

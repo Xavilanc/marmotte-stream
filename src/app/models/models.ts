@@ -1,6 +1,8 @@
+import { FormControl } from "@angular/forms";
+
 export interface AudioTrack {
-  title: string;
-  path: string;
+  title: FormControl<string | null>;
+  path: FormControl<string | null>;
 }
 
 export interface FormFieldConfig {
