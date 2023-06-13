@@ -10,6 +10,7 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ### 13/06/2023
 
+- [MS-FORM4] Changement du type de retour de la methode onFileInputChange
 - [MS-FORM3] Refactorisation du code du formulaire
 
 ### 05/06/2023

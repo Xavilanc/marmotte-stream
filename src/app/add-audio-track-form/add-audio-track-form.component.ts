@@ -33,15 +33,13 @@ export class AddAudioTrackFormComponent {
   }
 
   // Create an URL from the selected file
-  onFileInputChange(event: Event): string {
+  onFileInputChange(event: Event): void {
     if (this.formFieldConfig[0].inputType === 'file') {
       const fileInput = event.target as HTMLInputElement;
       const file = fileInput.files![0];
       const blobUrl = URL.createObjectURL(file);
       this.audioTrackFileUrl = blobUrl.replace(/^blob:/, '');
-      return this.audioTrackFileUrl;
     }
-    return '';
   }
 
   onSubmit(event: Event): string {
