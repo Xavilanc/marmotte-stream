@@ -1,5 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { Playlist } from '../shared/models/models';
 import { PlaylistService } from '../shared/services/playlist.service';
 

@@ -18,8 +18,6 @@ export class AddAudioTrackFormComponent {
 
   formFieldConfig: FormFieldConfig[] = AUDIO_TRACK_FORM_CONFIG;
 
-  playlist: Playlist = [];
-
   constructor(private playlistService: PlaylistService) {}
 
   // Getter for the input type
