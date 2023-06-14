@@ -8,6 +8,10 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ## Feature
 
+### 14/06/2023
+
+- [MS-PLAY1] Creation du playlist component et du playlist service
+
 ### 13/06/2023
 
 - [MS-FORM4] Changement du type de retour de la methode onFileInputChange

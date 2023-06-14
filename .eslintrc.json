@@ -22,6 +22,9 @@
         "import/prefer-default-export": "off",
         "no-console": "off",
         "import/extensions": "off",
-        "no-unused-vars": "off"
+        "no-unused-vars": "off",
+        "no-return-assign": "off",
+        "no-useless-constructor": "off",
+        "no-empty-function": "off"
     }
 }

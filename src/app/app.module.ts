@@ -4,9 +4,10 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AddAudioTrackFormComponent } from './add-audio-track-form/add-audio-track-form.component';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 @NgModule({
-  declarations: [AppComponent, AddAudioTrackFormComponent],
+  declarations: [AppComponent, AddAudioTrackFormComponent, PlaylistComponent],
   imports: [BrowserModule, ReactiveFormsModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
