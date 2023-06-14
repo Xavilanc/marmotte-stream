@@ -25,6 +25,9 @@
         "no-unused-vars": "off",
         "no-return-assign": "off",
         "no-useless-constructor": "off",
-        "no-empty-function": "off"
+        "no-empty-function": "off",
+        "no-new": "off",
+        "class-methods-use-this": "off",
+        "prefer-destructuring": "off"
     }
 }
