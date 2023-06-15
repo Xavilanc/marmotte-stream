@@ -95,4 +95,8 @@ export class PlaylistComponent implements OnInit {
     this.playlistService.deleteAudioTrack(index);
     this.playlistService.getPlaylist$();
   }
+
+  protected displayButton(i: number): boolean {
+    return this.audioStatus !== 'stopped' && this.currentIndex === i;
+  }
 }

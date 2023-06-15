@@ -2,7 +2,7 @@
     <li>
         <span>{{audioTrack}}</span>
         <audio id="audio-track" src={{audioTrack}}></audio>
-        <button (click)="play(i)" [disabled]="audioStatus !== 'stopped' && currentIndex === i">Play</button>
+        <button (click)="play(i)" [disabled]="displayButton(i)">Play</button>
         <button (click)="deleteAudioTrack(i)">Supprimer</button>
     </li>
 </ul>
