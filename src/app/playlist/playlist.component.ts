@@ -31,7 +31,7 @@ export class PlaylistComponent implements OnInit {
     });
   }
 
-  protected play(index: number): void {
+  play(index: number) {
     if (this.currentIndex !== index) {
       // Arrête la lecture du fichier en cours
       this.stopCurrentTrack();
@@ -50,12 +50,12 @@ export class PlaylistComponent implements OnInit {
     audioElement.addEventListener('ended', this.handleAudioEnded);
   }
 
-  protected stop(): void {
+  stop() {
     this.stopCurrentTrack();
   }
 
   // Réinitialisation en fin de playlist
-  protected handleAudioEnded(): void {
+  handleAudioEnded = () => {
     const audioElement = document.getElementById(
       'audio-track'
     ) as HTMLAudioElement;
@@ -73,10 +73,10 @@ export class PlaylistComponent implements OnInit {
       this.audioService.stop();
       this.currentIndex = 0;
     }
-  };
+  }
 
   // Lecture de la piste en cours de la playlist
-  protected playCurrentTrack(): void {
+  playCurrentTrack() {
     const currentTrack = this.playlist[this.currentIndex];
     const audioElement = document.getElementById(
       'audio-track'
@@ -87,7 +87,7 @@ export class PlaylistComponent implements OnInit {
   }
 
   // Arrêt de la lecture en cours
-  protected stopCurrentTrack(): void {
+  stopCurrentTrack() {
     const audioElement = document.getElementById(
       'audio-track'
     ) as HTMLAudioElement;
