@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FormFieldConfig, Playlist } from '../shared/models/models';
 import { AUDIO_TRACK_FORM_CONFIG } from '../form.config';
-import { PlaylistService } from '../shared/services/playlist.service';
+import { PlaylistService } from '../shared/services/playlist/playlist.service';
 
 @Component({
   selector: 'app-add-audio-track-form',
@@ -39,7 +39,7 @@ export class AddAudioTrackFormComponent {
       const fileInput = event.target as HTMLInputElement;
       const file = fileInput.files![0];
       const blobUrl = URL.createObjectURL(file);
-      this.audioTrackFileUrl = blobUrl.replace(/^blob:/, '');
+      this.audioTrackFileUrl = blobUrl;
     }
   }
 

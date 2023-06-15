@@ -8,6 +8,10 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ## Feature
 
+### 15/06/2023
+
+- [MS-PLAY2] Ajout des fonctions de lecture de la playlist
+
 ### 14/06/2023
 
 - [MS-PLAY1] Creation du playlist component et du playlist service

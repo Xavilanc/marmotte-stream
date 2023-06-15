@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Playlist } from '../models/models';
+import { Playlist } from '../../models/models';
 
 @Injectable({
   providedIn: 'root',
