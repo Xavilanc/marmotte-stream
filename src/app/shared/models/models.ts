@@ -6,4 +6,9 @@ export interface FormFieldConfig {
   formControlName: string;
 }
 
-export type Playlist = string[];
+export interface AudioTrack {
+  url: string;
+  name: string;
+}
+
+export type Playlist = AudioTrack[];

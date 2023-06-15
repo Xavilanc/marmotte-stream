@@ -10,6 +10,7 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ### 15/06/2023
 
+- [MS-PLAY3] Ajout des fonctions d'arret de lecture, téléchargement + ajustement du CSS
 - [MS-PLAY2] Ajout des fonctions de lecture de la playlist
 
 ### 14/06/2023
