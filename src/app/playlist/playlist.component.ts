@@ -1,6 +1,6 @@
 /* eslint-disable no-plusplus */
 import { Component, OnInit } from '@angular/core';
-import { Playlist } from '../shared/models/models';
+import { AudioTrack, Playlist } from '../shared/models/models';
 import { PlaylistService } from '../shared/services/playlist/playlist.service';
 import { AudioService } from '../shared/services/audio/audio.service';
 
@@ -31,7 +31,7 @@ export class PlaylistComponent implements OnInit {
     });
   }
 
-  play(index: number) {
+  protected play(index: number): void {
     if (this.currentIndex !== index) {
       // Arrête la lecture du fichier en cours
       this.stopCurrentTrack();
@@ -50,7 +50,12 @@ export class PlaylistComponent implements OnInit {
     audioElement.addEventListener('ended', this.handleAudioEnded);
   }
 
-  handleAudioEnded = () => {
+  protected stop(): void {
+    this.stopCurrentTrack();
+  }
+
+  // Réinitialisation en fin de playlist
+  protected handleAudioEnded(): void {
     const audioElement = document.getElementById(
       'audio-track'
     ) as HTMLAudioElement;
@@ -71,18 +76,18 @@ export class PlaylistComponent implements OnInit {
   };
 
   // Lecture de la piste en cours de la playlist
-  playCurrentTrack() {
+  protected playCurrentTrack(): void {
     const currentTrack = this.playlist[this.currentIndex];
     const audioElement = document.getElementById(
       'audio-track'
     ) as HTMLAudioElement;
-    audioElement.src = currentTrack;
+    audioElement.src = currentTrack.url;
     audioElement.load();
     this.play(this.currentIndex);
   }
 
   // Arrêt de la lecture en cours
-  stopCurrentTrack() {
+  protected stopCurrentTrack(): void {
     const audioElement = document.getElementById(
       'audio-track'
     ) as HTMLAudioElement;
@@ -91,8 +96,22 @@ export class PlaylistComponent implements OnInit {
     this.audioService.stop();
   }
 
-  deleteAudioTrack(index: number): void {
+  // Télécharger une piste de la playlist
+  protected downloadAudioTrack(audioTrack: AudioTrack): void {
+    const link = document.createElement('a');
+    link.href = audioTrack.url;
+    link.download = audioTrack.name;
+    link.click();
+  }
+
+  // Supprimer une piste de la playlist
+  protected deleteAudioTrack(index: number): void {
     this.playlistService.deleteAudioTrack(index);
     this.playlistService.getPlaylist$();
+  }
+
+  // Désactivation du bouton play de la piste en lecture
+  protected displayButton(index: number): boolean {
+    return this.audioStatus !== 'stopped' && this.currentIndex === index;
   }
 }

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { Playlist } from '../../models/models';
+import { AudioTrack, Playlist } from '../../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +9,7 @@ import { Playlist } from '../../models/models';
 export class PlaylistService {
   private playlist$ = new BehaviorSubject<Playlist>([]);
 
-  addAudioTrack(audioTrack: string): void {
+  addAudioTrack(audioTrack: AudioTrack): void {
     this.playlist$.next([...this.playlist$.value, audioTrack]);
   }
 
