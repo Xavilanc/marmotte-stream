@@ -26,6 +26,10 @@ export class PlaylistComponent implements OnInit {
       .getPlaylist$()
       .subscribe((value) => (this.playlist = value));
 
+    this.playlistService
+      .getCurrentIndex$()
+      .subscribe((value) => (this.currentIndex = value));
+
     this.audioService.getAudioStatus$().subscribe((status) => {
       this.audioStatus = status;
     });
@@ -45,6 +49,7 @@ export class PlaylistComponent implements OnInit {
 
     // Mise à jour de l'index en cours de lecture
     this.currentIndex = index;
+    this.playlistService.setCurrentIndex(index);
 
     // On écoute l'évenement de fin de lecture
     audioElement.addEventListener('ended', this.handleAudioEnded);
@@ -73,7 +78,7 @@ export class PlaylistComponent implements OnInit {
       this.audioService.stop();
       this.currentIndex = 0;
     }
-  }
+  };
 
   // Lecture de la piste en cours de la playlist
   playCurrentTrack() {

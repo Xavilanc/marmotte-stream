@@ -9,6 +9,8 @@ import { AudioTrack, Playlist } from '../../models/models';
 export class PlaylistService {
   private playlist$ = new BehaviorSubject<Playlist>([]);
 
+  private currentIndex$ = new BehaviorSubject<number>(0);
+
   addAudioTrack(audioTrack: AudioTrack): void {
     this.playlist$.next([...this.playlist$.value, audioTrack]);
   }
@@ -21,5 +23,13 @@ export class PlaylistService {
 
   getPlaylist$(): Observable<Playlist> {
     return this.playlist$.asObservable();
+  }
+
+  getCurrentIndex$(): Observable<number> {
+    return this.currentIndex$.asObservable();
+  }
+
+  setCurrentIndex(index: number): void {
+    this.currentIndex$.next(index);
   }
 }
