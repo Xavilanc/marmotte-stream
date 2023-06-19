@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { PlaylistService } from '../playlist/playlist.service';
+import { AudioStatus } from '../../models/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AudioService {
-  private audioStatus$ = new BehaviorSubject<string>('stopped');
+  private readonly audioStatus$ = new BehaviorSubject<AudioStatus>('stopped');
 
   play(): void {
     this.audioStatus$.next('playing');
@@ -20,7 +21,7 @@ export class AudioService {
     this.audioStatus$.next('stopped');
   }
 
-  getAudioStatus$(): Observable<string> {
+  getAudioStatus$(): Observable<AudioStatus> {
     return this.audioStatus$.asObservable();
   }
 }
