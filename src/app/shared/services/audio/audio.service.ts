@@ -21,7 +21,7 @@ export class AudioService {
     this.audioStatus$.next('stopped');
   }
 
-  getAudioStatus$(): Observable<string> {
+  getAudioStatus$(): Observable<AudioStatus> {
     return this.audioStatus$.asObservable();
   }
 }
