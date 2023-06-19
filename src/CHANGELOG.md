@@ -8,6 +8,10 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ## Feature
 
+### 19/06/2023
+
+- [MS-PLAY4] Ajout du typage du status de lecture
+
 ### 15/06/2023
 
 - [MS-PLAY3] Ajout des fonctions d'arret de lecture, téléchargement + ajustement du CSS
