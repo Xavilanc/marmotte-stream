@@ -15,8 +15,6 @@ export class PlaylistComponent implements OnInit {
 
   currentIndex: number = 0;
 
-  audioElement!: HTMLAudioElement;
-
   isPlaying: boolean = false;
 
   constructor(private playlistService: PlaylistService) {
