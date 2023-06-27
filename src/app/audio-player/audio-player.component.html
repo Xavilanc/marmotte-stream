@@ -1,0 +1,13 @@
+<h2>En lecture</h2>
+<div *ngIf="currentTrack">
+    <p>{{ currentTrack.url }}</p>
+    <p>{{ currentTrack.name }}</p>
+</div>
+<audio  *ngIf="currentTrack" id="current-track" src={{currentTrack.url}}></audio>
+<div class="button-group">
+    <button class="btn-play" (click)="play()"><span class="material-symbols-outlined play"> play_arrow </span></button>
+    <button class="btn-play" (click)="pause()"><span class="material-symbols-outlined play"> pause </span></button>
+    <button class="btn-stop" (click)="stop()"><span class="material-symbols-outlined stop"> stop </span></button>
+</div>
+<p>{{convertTime(currentTime)}} / {{convertTime(duration)}}</p>
+<progress *ngIf="currentTrack" [value]="progressValue" max="100"></progress>
