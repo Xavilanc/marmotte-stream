@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import { Component, OnInit } from '@angular/core';
-import { Observable, filter, switchMap, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { AudioStatus, AudioTrack, Playlist } from '../shared/models/models';
 import { PlaylistService } from '../shared/services/playlist/playlist.service';
 
