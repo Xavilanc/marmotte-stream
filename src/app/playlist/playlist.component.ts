@@ -1,5 +1,6 @@
 /* eslint-disable no-plusplus */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { distinctUntilChanged, tap } from 'rxjs';
 import { AudioTrack, Playlist } from '../shared/models/models';
 import { PlaylistService } from '../shared/services/playlist/playlist.service';
 
@@ -8,10 +9,8 @@ import { PlaylistService } from '../shared/services/playlist/playlist.service';
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.css'],
 })
-export class PlaylistComponent implements OnInit {
+export class PlaylistComponent {
   playlist: Playlist = [];
-
-  audioStatus!: string;
 
   currentIndex: number = 0;
 
@@ -20,7 +19,11 @@ export class PlaylistComponent implements OnInit {
   constructor(private playlistService: PlaylistService) {
     this.playlistService
       .getIsPlaying$()
-      .subscribe((value) => (this.isPlaying = value));
+      .pipe(
+        distinctUntilChanged(),
+        tap((value) => (this.isPlaying = value))
+      )
+      .subscribe();
 
     this.playlistService
       .getPlaylist$()
@@ -31,25 +34,17 @@ export class PlaylistComponent implements OnInit {
       .subscribe((value) => (this.currentIndex = value));
   }
 
-  ngOnInit(): void {
-    this.playlistService.getAudioStatus$().subscribe((status) => {
-      this.audioStatus = status;
-    });
-  }
-
-  play(index: number) {
+  play(index: number, playlist: Playlist) {
     if (this.currentIndex !== index) {
       this.stop();
-      this.currentIndex = index;
+      this.playlistService.setCurrentIndex(index);
     }
-
+    this.playlistService.setCurrentAudioTrack(index, playlist);
     this.playlistService.setIsPlaying(true);
-    this.playlistService.play();
   }
 
   stop() {
     this.playlistService.setIsPlaying(false);
-    this.playlistService.stop();
   }
 
   // Télécharger une piste de la playlist

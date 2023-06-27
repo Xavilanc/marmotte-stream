@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
-import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs';
-import { AudioStatus, AudioTrack, Playlist } from '../shared/models/models';
+import { AfterViewChecked, Component } from '@angular/core';
+import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs';
+import { AudioTrack, Playlist } from '../shared/models/models';
 import { PlaylistService } from '../shared/services/playlist/playlist.service';
 
 @Component({
@@ -9,15 +9,13 @@ import { PlaylistService } from '../shared/services/playlist/playlist.service';
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.css'],
 })
-export class AudioPlayerComponent implements OnInit {
+export class AudioPlayerComponent {
   playlist: Playlist = [];
 
   currentTrack: AudioTrack = {
     url: '',
     name: '',
   };
-
-  isPlaying: AudioStatus = 'stopped';
 
   progressValue: number = 0;
 
@@ -29,13 +27,20 @@ export class AudioPlayerComponent implements OnInit {
 
   audioElement!: HTMLAudioElement;
 
-  isPlayingBool: boolean = false;
+  isPlaying!: boolean;
 
   constructor(private playlistService: PlaylistService) {
     this.playlistService
-      .getIsPlaying$()
+      .getCurrentAudioTrack$()
       .pipe(
+        switchMap((track) => {
+          this.currentTrack = track;
+          return this.playlistService.getIsPlaying$();
+        }),
+        distinctUntilChanged(),
+        filter(() => this.playlist.length > 0),
         tap((value) => {
+          this.isPlaying = value;
           if (value) {
             this.play();
           } else {
@@ -52,27 +57,17 @@ export class AudioPlayerComponent implements OnInit {
     this.playlistService
       .getPlaylist$()
       .subscribe((value) => (this.playlist = value));
-
-    this.playlistService.getCurrentAudioTrack$().subscribe((track) => {
-      this.currentTrack = track;
-    });
-  }
-
-  ngOnInit(): void {
-    this.playlistService.getAudioStatus$().subscribe((status) => {
-      this.isPlaying = status;
-    });
   }
 
   play(): void {
-    this.playlistService.play();
     const audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
+    console.log(this.currentTrack);
+    console.log(this.currentIndex);
     audioElement.src = this.currentTrack.url;
     audioElement.currentTime = this.currentTime;
     audioElement.play();
-    audioElement.addEventListener('ended', this.handleAudioEnded);
 
     const progressElement = document.querySelector(
       'progress'
@@ -98,17 +93,14 @@ export class AudioPlayerComponent implements OnInit {
   }
 
   pause(): void {
-    this.playlistService.pause();
     this.playlistService.setIsPlaying(false);
     const audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
     audioElement.pause();
-    this.isPlayingBool = false;
   }
 
   stop(): void {
-    this.playlistService.stop();
     this.playlistService.setIsPlaying(false);
     const audioElement = document.getElementById(
       'current-track'
@@ -145,14 +137,17 @@ export class AudioPlayerComponent implements OnInit {
     // Vérifie s'il reste d'autres pistes à lire dans la playlist
     if (this.currentIndex < this.playlist.length - 1) {
       // Passe à la piste suivante
-      this.playlistService.setCurrentIndex(this.currentIndex + 1);
-      this.playlistService.setCurrentAudioTrack(this.currentIndex);
+      this.currentIndex += 1;
+      this.playlistService.setCurrentAudioTrack(
+        this.currentIndex,
+        this.playlist
+      );
       this.play();
       this.playlistService.setIsPlaying(true);
     } else {
       // Fin de la playlist, arrête la lecture et réinitialise l'index
-      this.playlistService.stop();
       this.playlistService.setCurrentIndex(0);
+      this.playlistService.setIsPlaying(false);
     }
   };
 }

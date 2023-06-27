@@ -2,12 +2,52 @@
 * {
     list-style-type: none;
     text-decoration: none;
+    font-family: 'Cooper';
     margin: 0;
     padding: 0;
+    background-color: rgb(149, 235, 235);
+}
+
+img {
+    width: 80vw;
+    margin-left: 10vw;
 }
 
 h2 {
-    margin: 2%
+    margin: 2%;
+    color: rgb(206, 187, 19);
+    font-size: 2.5vw;
+    -webkit-text-stroke: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+p {
+    font-size: 1.4vw;
+    margin: 1%
+}
+select {
+    background-color: rgb(16, 192, 39);
+    font-size: 1.4vw;
+    border-radius: 5px;
+    margin-left: 1%
+}
+
+option {
+    background-color: rgb(127, 214, 138);
+    font-size: 1.4vw;
+}
+
+input {
+    background-color: white;
+    width: 40vw;
+    font-size: 1.4vw;
+    border: solid 1px black;
+    border-radius: 5px;
+    margin: 1%;
+}
+
+progress {
+    margin: 1%;
 }
 
 .button-group {
@@ -17,6 +57,7 @@ h2 {
 .button-group button {
     margin: 2%;
     border-radius: 5px;
+    border: solid 1px black;
     width: 5vw;
     cursor: pointer;
 }

@@ -12,5 +12,3 @@ export interface AudioTrack {
 }
 
 export type Playlist = AudioTrack[];
-
-export type AudioStatus = 'stopped' | 'playing' | 'paused' | 'ended';

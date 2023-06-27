@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, map, take } from 'rxjs';
-import { AudioStatus, AudioTrack, Playlist } from '../../models/models';
+import { BehaviorSubject, EMPTY, Observable, filter, map, switchMap, take } from 'rxjs';
+import { AudioTrack, Playlist } from '../../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +15,6 @@ export class PlaylistService {
     url: '',
     name: '',
   });
-
-  private readonly audioStatus$ = new BehaviorSubject<AudioStatus>('stopped');
 
   private isPlaying$ = new BehaviorSubject<boolean>(false);
 
@@ -59,14 +57,8 @@ export class PlaylistService {
     return this.currentAudioTrack$.asObservable();
   }
 
-  setCurrentAudioTrack(index: number): void {
-    this.getAudioTrackByIndex$(index)
-      .pipe(take(1))
-      .subscribe((audioTrack) => {
-        if (audioTrack) {
-          this.currentAudioTrack$.next(audioTrack);
-        }
-      });
+  setCurrentAudioTrack(index: number, playlist: Playlist): void {
+    this.currentAudioTrack$.next(playlist[index]);
   }
 
   getPlaylist$(): Observable<Playlist> {
@@ -79,25 +71,5 @@ export class PlaylistService {
 
   setCurrentIndex(index: number): void {
     this.currentIndex$.next(index);
-  }
-
-  play(): void {
-    const currentIndex = this.currentIndex$.value;
-    const playlist = this.playlist$.value;
-    const currentTrack = playlist[currentIndex];
-    this.currentAudioTrack$.next(currentTrack);
-    this.audioStatus$.next('playing');
-  }
-
-  pause(): void {
-    this.audioStatus$.next('paused');
-  }
-
-  stop(): void {
-    this.audioStatus$.next('stopped');
-  }
-
-  getAudioStatus$(): Observable<AudioStatus> {
-    return this.audioStatus$.asObservable();
   }
 }
