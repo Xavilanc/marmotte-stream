@@ -8,7 +8,12 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { AudioPlayerComponent } from './audio-player/audio-player.component';
 
 @NgModule({
-  declarations: [AppComponent, AddAudioTrackFormComponent, PlaylistComponent, AudioPlayerComponent],
+  declarations: [
+    AppComponent,
+    AddAudioTrackFormComponent,
+    PlaylistComponent,
+    AudioPlayerComponent,
+  ],
   imports: [BrowserModule, ReactiveFormsModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
