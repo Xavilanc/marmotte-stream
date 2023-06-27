@@ -4,40 +4,6 @@ li {
     margin: 2%;
 }
 
-.button-group {
-    display: flex;
-}
-
-button {
-    margin: 2%;
-    border-radius: 5px;
-    width: 5vw;
-    cursor: pointer;
-}
-
-button:disabled {
-    display: none;
-}
-
-button span {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-button .play,
-.btn-play {
-    color: green;
-    background-color: rgb(205, 243, 204);
-    border: none;
-}
-
-button .stop,
-.btn-stop {
-    color: black;
-    background-color: rgb(255, 188, 188);
-    border: none;
-}
-
 button .delete,
 .btn-delete,
 button .download,

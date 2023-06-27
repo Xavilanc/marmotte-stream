@@ -8,6 +8,10 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ## Feature
 
+### 27/06/2023
+
+- [MS-LECT1] Ajout du composant audio player
+
 ### 19/06/2023
 
 - [MS-PLAY4] Ajout du typage du status de lecture

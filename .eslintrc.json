@@ -28,6 +28,7 @@
         "no-empty-function": "off",
         "no-new": "off",
         "class-methods-use-this": "off",
-        "prefer-destructuring": "off"
+        "prefer-destructuring": "off",
+        "no-unused-expressions": "off"
     }
 }
