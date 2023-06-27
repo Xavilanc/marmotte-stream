@@ -6,6 +6,10 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ## Bugfix
 
+### 27/06/2023
+
+- [MS-LECT2] Fix du bug sur l'affichage du temps restant
+
 ## Feature
 
 ### 27/06/2023

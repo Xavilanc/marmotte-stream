@@ -9,5 +9,5 @@
     <button class="btn-play" (click)="pause()"><span class="material-symbols-outlined play"> pause </span></button>
     <button class="btn-stop" (click)="stop()"><span class="material-symbols-outlined stop"> stop </span></button>
 </div>
-<p>{{convertTime(currentTime)}} / {{convertTime(duration)}}</p>
+<p>{{convertTime(currentTime ? currentTime : 0)}} / {{convertTime(duration ? duration : 0)}}</p>
 <progress *ngIf="currentTrack" [value]="progressValue" max="100"></progress>
