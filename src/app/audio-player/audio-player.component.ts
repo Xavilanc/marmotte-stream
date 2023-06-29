@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs';
+import { Component, OnInit, inject } from '@angular/core';
 import { AudioStatus, AudioTrack, Playlist } from '../shared/models/models';
 import { PlaylistService } from '../shared/services/playlist/playlist.service';
 
@@ -17,8 +16,6 @@ export class AudioPlayerComponent implements OnInit {
     name: '',
   };
 
-  isPlaying: AudioStatus = 'stopped';
-
   progressValue: number = 0;
 
   currentTime: number = 0;
@@ -27,52 +24,49 @@ export class AudioPlayerComponent implements OnInit {
 
   duration: number = 0;
 
-  audioElement!: HTMLAudioElement;
+  audioStatus: AudioStatus = 'stopped';
 
-  isPlayingBool: boolean = false;
+  protected playlistService = inject(PlaylistService);
+  readonly playlist$ = this.playlistService.playlist$;
+  readonly currentIndex$ = this.playlistService.currentIndex$;
+  readonly currentAudioTrack$ = this.playlistService.currentAudioTrack$;
+  // readonly isPlaying$ = this.playlistService.isPlaying$;
+  readonly audioStatus$ = this.playlistService.audioStatus$;
 
-  constructor(private playlistService: PlaylistService) {
-    this.playlistService
-      .getIsPlaying$()
-      .pipe(
-        tap((value) => {
-          if (value) {
-            this.play();
-          } else {
-            this.stop();
-          }
-        })
-      )
-      .subscribe();
+  protected isPlaying!: boolean;
 
-    this.playlistService
-      .getCurrentIndex$()
-      .subscribe((value) => (this.currentIndex = value));
-
-    this.playlistService
-      .getPlaylist$()
-      .subscribe((value) => (this.playlist = value));
-
-    this.playlistService.getCurrentAudioTrack$().subscribe((track) => {
-      this.currentTrack = track;
+  ngOnInit(): void {
+    this.playlist$.subscribe((value) => (this.playlist = value));
+    this.currentAudioTrack$.subscribe((value) => {
+      this.currentTrack = value;
+      this.handleAudioStatus();
+    });
+    this.currentIndex$.subscribe((value) => (this.currentIndex = value));
+    this.audioStatus$.subscribe((value) => {
+      this.audioStatus = value;
+      this.handleAudioStatus();
     });
   }
 
-  ngOnInit(): void {
-    this.playlistService.getAudioStatus$().subscribe((status) => {
-      this.isPlaying = status;
-    });
+  handleAudioStatus(): void {
+    if (this.audioStatus === 'playing') {
+      this.play();
+    } else if (this.audioStatus === 'paused') {
+      this.pause();
+    } else {
+      this.stop();
+    }
   }
 
   play(): void {
-    this.playlistService.play();
+    this.playlistService.setAudioStatus('playing');
     const audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
     audioElement.src = this.currentTrack.url;
     audioElement.currentTime = this.currentTime;
     audioElement.play();
-    audioElement.addEventListener('ended', this.handleAudioEnded);
+    audioElement.addEventListener('ended', this.handlePlaylist);
 
     const progressElement = document.querySelector(
       'progress'
@@ -97,24 +91,50 @@ export class AudioPlayerComponent implements OnInit {
     });
   }
 
+  handlePlaylist = () => {
+    this.playlistService.setAudioStatus('ended');
+    const audioElement = document.getElementById(
+      'current-track'
+    ) as HTMLAudioElement;
+    audioElement.removeEventListener('ended', this.handlePlaylist);
+    this.currentTime = 0;
+    if (this.currentIndex < this.playlistService.getPlaylistLength() - 1) {
+      this.playlistService.setCurrentAudioTrack(
+        this.currentIndex,
+        this.playlist
+      );
+      this.playlistService.setCurrentIndex(this.currentIndex + 1);
+      this.playlistService.setCurrentAudioTrack(
+        this.currentIndex,
+        this.playlist
+      );
+      this.playlistService.setAudioStatus('playing');
+    } else {
+      this.playlistService.setCurrentIndex(0);
+      this.playlistService.setCurrentAudioTrack(0, this.playlist);
+      this.playlistService.setAudioStatus('playing');
+    }
+  };
+
   pause(): void {
-    this.playlistService.pause();
-    this.playlistService.setIsPlaying(false);
+    this.playlistService.setAudioStatus('paused');
     const audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
     audioElement.pause();
-    this.isPlayingBool = false;
   }
 
   stop(): void {
-    this.playlistService.stop();
-    this.playlistService.setIsPlaying(false);
+    this.playlistService.setAudioStatus('stopped');
     const audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
     audioElement.pause();
     audioElement.currentTime = 0;
+  }
+
+  setAudioStatus(audioStatus: AudioStatus) {
+    this.playlistService.setAudioStatus(audioStatus);
   }
 
   convertTime(time: number): string {
@@ -132,27 +152,4 @@ export class AudioPlayerComponent implements OnInit {
   padNumber(number: number): string {
     return number.toString().padStart(2, '0');
   }
-
-  handleAudioEnded = () => {
-    // Supprime l'écouteur d'événement de fin de lecture
-    this.playlistService.setIsPlaying(false);
-    this.currentTime = 0;
-    const audioElement = document.getElementById(
-      'current-track'
-    ) as HTMLAudioElement;
-    audioElement.removeEventListener('ended', this.handleAudioEnded);
-
-    // Vérifie s'il reste d'autres pistes à lire dans la playlist
-    if (this.currentIndex < this.playlist.length - 1) {
-      // Passe à la piste suivante
-      this.playlistService.setCurrentIndex(this.currentIndex + 1);
-      this.playlistService.setCurrentAudioTrack(this.currentIndex);
-      this.play();
-      this.playlistService.setIsPlaying(true);
-    } else {
-      // Fin de la playlist, arrête la lecture et réinitialise l'index
-      this.playlistService.stop();
-      this.playlistService.setCurrentIndex(0);
-    }
-  };
 }

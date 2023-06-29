@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { AudioTrack, FormFieldConfig, Playlist } from '../shared/models/models';
+import { AudioTrack, FormFieldConfig } from '../shared/models/models';
 import { AUDIO_TRACK_FORM_CONFIG } from '../form.config';
 import { PlaylistService } from '../shared/services/playlist/playlist.service';
 
@@ -24,9 +24,7 @@ export class AddAudioTrackFormComponent {
 
   constructor(private playlistService: PlaylistService) {}
 
-  onSubmit(event: Event): void {
-    console.log('Audio Track Form submitted');
-    console.log(this.getAudioTrack());
+  onSubmit(): void {
     this.playlistService.addAudioTrack(this.getAudioTrack());
   }
 

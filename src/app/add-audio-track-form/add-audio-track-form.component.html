@@ -4,10 +4,10 @@
   <option value="file">Charger un fichier</option>
 </select>
 <form
-  (ngSubmit)="myForm.valid && onSubmit($event)"
+  (ngSubmit)="myForm.valid && onSubmit()"
   #myForm="ngForm">
   <input [type]="getType()" name="url" [formControl]="audioTrack" id="url" (change)="onFileInputChange($event)"/>
 
-  <button type="submit">Sauvegarder</button>
-  <button type="reset">Recommencer</button>
+  <button  class="submit-btn" type="submit">Sauvegarder</button>
+  <button class="reset-btn" type="reset">Recommencer</button>
 </form>
