@@ -59,7 +59,7 @@ export class AudioPlayerComponent implements OnInit {
   }
 
   play(): void {
-    // if (this.currentIndex)
+    this.playlistService.setAudioStatus('playing');
     const audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
@@ -92,6 +92,7 @@ export class AudioPlayerComponent implements OnInit {
   }
 
   handlePlaylist = () => {
+    this.playlistService.setAudioStatus('ended');
     const audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
@@ -107,11 +108,11 @@ export class AudioPlayerComponent implements OnInit {
         this.currentIndex,
         this.playlist
       );
-      audioElement.play();
+      this.playlistService.setAudioStatus('playing');
     } else {
       this.playlistService.setCurrentIndex(0);
       this.playlistService.setCurrentAudioTrack(0, this.playlist);
-      audioElement.play();
+      this.playlistService.setAudioStatus('playing');
     }
   };
 
