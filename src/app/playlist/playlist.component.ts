@@ -1,7 +1,6 @@
 /* eslint-disable no-plusplus */
-import { Component } from '@angular/core';
-import { distinctUntilChanged, tap } from 'rxjs';
-import { AudioTrack, Playlist } from '../shared/models/models';
+import { Component, OnInit, inject } from '@angular/core';
+import { AudioStatus, AudioTrack, Playlist } from '../shared/models/models';
 import { PlaylistService } from '../shared/services/playlist/playlist.service';
 
 @Component({
@@ -9,42 +8,36 @@ import { PlaylistService } from '../shared/services/playlist/playlist.service';
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.css'],
 })
-export class PlaylistComponent {
+export class PlaylistComponent implements OnInit {
   playlist: Playlist = [];
 
   currentIndex: number = 0;
 
   isPlaying: boolean = false;
 
-  constructor(private playlistService: PlaylistService) {
-    this.playlistService
-      .getIsPlaying$()
-      .pipe(
-        distinctUntilChanged(),
-        tap((value) => (this.isPlaying = value))
-      )
-      .subscribe();
+  audioStatus: AudioStatus = 'stopped';
 
-    this.playlistService
-      .getPlaylist$()
-      .subscribe((value) => (this.playlist = value));
+  protected playlistService = inject(PlaylistService);
+  readonly playlist$ = this.playlistService.playlist$;
+  readonly currentIndex$ = this.playlistService.currentIndex$;
+  readonly audioStatus$ = this.playlistService.audioStatus$;
 
-    this.playlistService
-      .getCurrentIndex$()
-      .subscribe((value) => (this.currentIndex = value));
+  ngOnInit(): void {
+    this.currentIndex$.subscribe((value) => (this.currentIndex = value));
+    this.playlist$.subscribe((value) => (this.playlist = value));
+    this.audioStatus$.subscribe((value) => (this.audioStatus = value));
   }
 
   play(index: number, playlist: Playlist) {
-    if (this.currentIndex !== index) {
-      this.stop();
-      this.playlistService.setCurrentIndex(index);
-    }
+    this.playlistService.setAudioStatus('playing');
+    this.playlistService.setCurrentIndex(index);
     this.playlistService.setCurrentAudioTrack(index, playlist);
-    this.playlistService.setIsPlaying(true);
+    // this.playlistService.setIsPlaying(true);
   }
 
   stop() {
-    this.playlistService.setIsPlaying(false);
+    this.playlistService.setAudioStatus('stopped');
+    // this.playlistService.setIsPlaying(false);
   }
 
   // Télécharger une piste de la playlist
@@ -57,12 +50,12 @@ export class PlaylistComponent {
 
   // Supprimer une piste de la playlist
   protected deleteAudioTrack(index: number): void {
+    this.playlistService.setAudioStatus('stopped');
     this.playlistService.deleteAudioTrack(index);
-    this.playlistService.getPlaylist$();
   }
 
   // Désactivation du bouton play de la piste en lecture
   protected displayButton(index: number): boolean {
-    return this.isPlaying === true && this.currentIndex === index;
+    return this.audioStatus === 'playing' && this.currentIndex === index;
   }
 }

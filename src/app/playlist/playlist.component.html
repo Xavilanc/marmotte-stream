@@ -1,6 +1,6 @@
 <h2>Playlist</h2>
 <p *ngIf="playlist.length === 0"> Playlist vide</p>
-<ul *ngFor="let audioTrack of playlist; let i = index">
+<ul *ngFor="let audioTrack of playlistService.playlist$ | async; let i = index">
   <li>
     <p>{{ audioTrack.name }} <span *ngIf="displayButton(i)">Playing</span></p>
     <div class="button-group">

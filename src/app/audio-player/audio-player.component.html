@@ -1,13 +1,15 @@
 <h2>En lecture</h2>
-<div *ngIf="currentTrack">
-    <p>{{ currentTrack.url }}</p>
-    <p>{{ currentTrack.name }}</p>
+<div *ngFor="let audioTrack of playlistService.playlist$ | async; let i = index">
+    <div *ngIf="(playlistService.currentIndex$ | async) === i">
+        <p>{{ audioTrack.name}}</p>
+        <audio id="current-track" [src]="audioTrack.url"></audio>
+        <div class="button-group">
+            <button class="btn-play" (click)="setAudioStatus('playing')"><span class="material-symbols-outlined play"> play_arrow </span></button>
+            <button class="btn-play" (click)="setAudioStatus('paused')"><span class="material-symbols-outlined play"> pause </span></button>
+            <button class="btn-stop" (click)="setAudioStatus('stopped')"><span class="material-symbols-outlined stop"> stop </span></button>
+        </div>
+        <p>{{convertTime(currentTime ? currentTime : 0)}} / {{convertTime(duration ? duration : 0)}}</p>
+        <progress *ngIf="currentTrack" [value]="progressValue" max="100"></progress>
+    </div>
+
 </div>
-<audio  *ngIf="currentTrack" id="current-track" src={{currentTrack.url}} (ended)="this.handleAudioEnded()" ></audio>
-<div class="button-group">
-    <button class="btn-play" (click)="play()"><span class="material-symbols-outlined play"> play_arrow </span></button>
-    <button class="btn-play" (click)="pause()"><span class="material-symbols-outlined play"> pause </span></button>
-    <button class="btn-stop" (click)="stop()"><span class="material-symbols-outlined stop"> stop </span></button>
-</div>
-<p>{{convertTime(currentTime ? currentTime : 0)}} / {{convertTime(duration ? duration : 0)}}</p>
-<progress *ngIf="currentTrack" [value]="progressValue" max="100"></progress>
