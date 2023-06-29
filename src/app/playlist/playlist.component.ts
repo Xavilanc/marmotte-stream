@@ -32,12 +32,10 @@ export class PlaylistComponent implements OnInit {
     this.playlistService.setAudioStatus('playing');
     this.playlistService.setCurrentIndex(index);
     this.playlistService.setCurrentAudioTrack(index, playlist);
-    // this.playlistService.setIsPlaying(true);
   }
 
   stop() {
     this.playlistService.setAudioStatus('stopped');
-    // this.playlistService.setIsPlaying(false);
   }
 
   // Télécharger une piste de la playlist
