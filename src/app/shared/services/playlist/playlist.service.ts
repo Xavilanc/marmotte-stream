@@ -1,14 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  EMPTY,
-  Observable,
-  filter,
-  map,
-  switchMap,
-  take,
-} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AudioStatus, AudioTrack, Playlist } from '../../models/models';
 
 @Injectable({
@@ -27,9 +19,6 @@ export class PlaylistService {
   });
   readonly currentAudioTrack$ = this.currentAudioTrack.asObservable();
 
-  // private readonly isPlaying = new BehaviorSubject<boolean>(false);
-  // readonly isPlaying$ = this.isPlaying.asObservable();
-
   private readonly audioStatus = new BehaviorSubject<AudioStatus>('stopped');
   readonly audioStatus$ = this.audioStatus.asObservable();
 
@@ -40,18 +29,6 @@ export class PlaylistService {
   deleteAudioTrack(index: number): void {
     this.playlist.next(this.playlist.value.filter((_value, i) => i !== index));
   }
-
-  getAudioTrackByIndex$(index: number): Observable<AudioTrack | undefined> {
-    return this.playlist$.pipe(
-      map((playlist: Playlist) =>
-        index && index < playlist.length ? playlist[index] : undefined
-      )
-    );
-  }
-
-  // setIsPlaying(isPlaying: boolean): void {
-  //   this.isPlaying.next(isPlaying);
-  // }
 
   setCurrentAudioTrack(index: number, playlist: Playlist): void {
     this.currentAudioTrack.next(playlist[index]);
