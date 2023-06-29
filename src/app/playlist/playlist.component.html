@@ -1,0 +1,21 @@
+<h2>Playlist</h2>
+<p *ngIf="playlist.length === 0"> Playlist vide</p>
+<ul *ngFor="let audioTrack of playlistService.playlist$ | async; let i = index">
+  <li>
+    <p>{{ audioTrack.name }} <span *ngIf="displayButton(i)">Playing</span></p>
+    <div class="button-group">
+      <button class="btn-play" (click)="play(i, playlist)" [disabled]="displayButton(i)" title="Lecture">
+        <span class="material-symbols-outlined play"> play_arrow </span>
+      </button>
+      <button class="btn-stop" (click)="stop()" [disabled]="!displayButton(i)" title="Stop">
+        <span class="material-symbols-outlined stop"> stop </span>
+      </button>
+      <button class="btn-download" (click)="downloadAudioTrack(audioTrack)" title="Télécharger">
+        <span class="material-symbols-outlined download"> download </span>
+      </button>
+      <button class="btn-delete" (click)="deleteAudioTrack(i)" title="Supprimer">
+        <span class="material-symbols-outlined delete"> delete </span>
+      </button>
+    </div>
+  </li>
+</ul>

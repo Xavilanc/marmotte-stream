@@ -1,0 +1,13 @@
+<p>Veuillez choisir le mode d'ajout de votre piste musicale</p>
+<select [(ngModel)]="selectedOption" (change)="onSelectChange($event)">
+  <option value="text">Entrer une URL</option>
+  <option value="file">Charger un fichier</option>
+</select>
+<form
+  (ngSubmit)="myForm.valid && onSubmit()"
+  #myForm="ngForm">
+  <input [type]="getType()" name="url" [formControl]="audioTrack" id="url" (change)="onFileInputChange($event)"/>
+
+  <button  class="submit-btn" type="submit">Sauvegarder</button>
+  <button class="reset-btn" type="reset">Recommencer</button>
+</form>

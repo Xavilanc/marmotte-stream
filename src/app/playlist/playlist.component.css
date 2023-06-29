@@ -1,0 +1,14 @@
+li {
+    display: flex;
+    justify-content: space-between;
+    margin: 2%;
+}
+
+button .delete,
+.btn-delete,
+button .download,
+.btn-download {
+    color: black;
+    background-color: rgb(197, 195, 195);
+    border: none;
+}

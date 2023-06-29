@@ -1,0 +1,13 @@
+.submit-btn, .reset-btn {
+    border: solid 1px black;
+    border-radius: 5px;
+    background-color: rgb(185, 189, 186);
+    font-size: 1.5vw;
+    margin: 1%;
+    padding-left: 0.4%;
+    padding-right: 0.4%;
+}
+
+.submit-btn:hover, .reset-btn:hover {
+    background-color: rgb(185, 127, 127);
+}
