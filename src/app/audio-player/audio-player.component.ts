@@ -26,11 +26,12 @@ export class AudioPlayerComponent implements OnInit {
 
   audioStatus: AudioStatus = 'stopped';
 
+  audioElement!: HTMLAudioElement;
+
   protected playlistService = inject(PlaylistService);
   readonly playlist$ = this.playlistService.playlist$;
   readonly currentIndex$ = this.playlistService.currentIndex$;
   readonly currentAudioTrack$ = this.playlistService.currentAudioTrack$;
-  // readonly isPlaying$ = this.playlistService.isPlaying$;
   readonly audioStatus$ = this.playlistService.audioStatus$;
 
   protected isPlaying!: boolean;
@@ -39,6 +40,7 @@ export class AudioPlayerComponent implements OnInit {
     this.playlist$.subscribe((value) => (this.playlist = value));
     this.currentAudioTrack$.subscribe((value) => {
       this.currentTrack = value;
+      this.audioElement.load();
       this.handleAudioStatus();
     });
     this.currentIndex$.subscribe((value) => (this.currentIndex = value));
@@ -60,43 +62,42 @@ export class AudioPlayerComponent implements OnInit {
 
   play(): void {
     this.playlistService.setAudioStatus('playing');
-    const audioElement = document.getElementById(
+    this.audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
-    audioElement.src = this.currentTrack.url;
-    audioElement.currentTime = this.currentTime;
-    audioElement.play();
-    audioElement.addEventListener('ended', this.handlePlaylist);
+    this.audioElement.currentTime = this.currentTime;
+    this.audioElement.play();
+    this.audioElement.addEventListener('ended', this.handlePlaylist);
 
     const progressElement = document.querySelector(
       'progress'
     ) as HTMLProgressElement;
-    audioElement.addEventListener('timeupdate', () => {
+    this.audioElement.addEventListener('timeupdate', () => {
       // Vérifier si la valeur est un nombre valide
       if (
-        !isNaN(audioElement.currentTime) &&
-        isFinite(audioElement.currentTime) &&
-        !isNaN(audioElement.duration) &&
-        isFinite(audioElement.duration)
+        !isNaN(this.audioElement.currentTime) &&
+        isFinite(this.audioElement.currentTime) &&
+        !isNaN(this.audioElement.duration) &&
+        isFinite(this.audioElement.duration)
       ) {
         // Assigner la valeur seulement si elle est valide
         this.progressValue =
-          (audioElement.currentTime / audioElement.duration) * 100;
+          (this.audioElement.currentTime / this.audioElement.duration) * 100;
       } else {
         // Si la valeur n'est pas valide, assigner une valeur par défaut
         this.progressValue = 0;
       }
-      this.currentTime = audioElement.currentTime;
-      this.duration = audioElement.duration;
+      this.currentTime = this.audioElement.currentTime;
+      this.duration = this.audioElement.duration;
     });
   }
 
   handlePlaylist = () => {
-    this.playlistService.setAudioStatus('ended');
-    const audioElement = document.getElementById(
+    this.playlistService.setAudioStatus('stopped');
+    this.audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
-    audioElement.removeEventListener('ended', this.handlePlaylist);
+    this.audioElement.removeEventListener('ended', this.handlePlaylist);
     this.currentTime = 0;
     if (this.currentIndex < this.playlistService.getPlaylistLength() - 1) {
       this.playlistService.setCurrentAudioTrack(
@@ -104,33 +105,28 @@ export class AudioPlayerComponent implements OnInit {
         this.playlist
       );
       this.playlistService.setCurrentIndex(this.currentIndex + 1);
-      this.playlistService.setCurrentAudioTrack(
-        this.currentIndex,
-        this.playlist
-      );
-      this.playlistService.setAudioStatus('playing');
     } else {
       this.playlistService.setCurrentIndex(0);
-      this.playlistService.setCurrentAudioTrack(0, this.playlist);
-      this.playlistService.setAudioStatus('playing');
     }
+    this.playlistService.setCurrentAudioTrack(this.currentIndex, this.playlist);
+    this.playlistService.setAudioStatus('playing');
   };
 
   pause(): void {
     this.playlistService.setAudioStatus('paused');
-    const audioElement = document.getElementById(
+    this.audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
-    audioElement.pause();
+    this.audioElement.pause();
   }
 
   stop(): void {
     this.playlistService.setAudioStatus('stopped');
-    const audioElement = document.getElementById(
+    this.audioElement = document.getElementById(
       'current-track'
     ) as HTMLAudioElement;
-    audioElement.pause();
-    audioElement.currentTime = 0;
+    this.audioElement.pause();
+    this.audioElement.currentTime = 0;
   }
 
   setAudioStatus(audioStatus: AudioStatus) {

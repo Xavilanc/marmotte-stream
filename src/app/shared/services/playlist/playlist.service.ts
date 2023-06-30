@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AudioStatus, AudioTrack, Playlist } from '../../models/models';
 
 @Injectable({

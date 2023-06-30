@@ -12,6 +12,10 @@ Toutes les modifications notables apportés à ce projet seront documentés dans
 
 ## Feature
 
+### 29/06/2023
+
+- [MS-STYLE1] Ajustement de l'interface graphique
+
 ### 27/06/2023
 
 - [MS-LECT1] Ajout du composant audio player
